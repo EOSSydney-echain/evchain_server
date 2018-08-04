@@ -36,11 +36,13 @@ class token : public eosio::contract {
 	       , eosio::indexed_by< N( byname ), eosio::const_mem_fun< actions, uint64_t, &actions::get_name> >
 	      >  _action_index;
 
+          void _add_token_balance( account_name payer, account_name to, eosio::asset q );
 	  void _issue( account_name to, eosio::asset quantity );
 
       public:
           token( account_name self ):contract(self),_token_index(_self, _self),_action_index(_self, _self){}
 	  void transfer ( account_name from, account_name to, eosio::asset quantity );
+          void getbalance ( account_name user );
 
           void issuetoken( account_name to, eosio::asset quantity);
 	  void getactions(uint64_t page=1);
@@ -53,5 +55,5 @@ class token : public eosio::contract {
 		);
 
     };
-    EOSIO_ABI(token, (transfer)(issuetoken)(getactions)(writeaction) );
+    EOSIO_ABI(token, (transfer)(issuetoken)(getbalance)(getactions)(writeaction) );
 }
